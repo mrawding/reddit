@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html>
+
+	        <meta charset="utf-8">
+
+		<head>
+			<link rel="stylesheet" href="styles.css">
+			<script src="https://kit.fontawesome.com/3176c467ca.js" crossorigin="anonymous"></script>
+		</head>
+	
+
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+
+		
+		<title>Welcome to Firebase Hosting</title>
+		<script defer src="/__/firebase/7.1.0/firebase-app.js"></script>
+
+		       
+		<script defer src="/__/firebase/7.1.0/firebase-database.js"></script>
+		
+		<script defer src="/__/firebase/7.1.0/firebase-auth.js"></script>
+		
+		<script defer src="/__/firebase/init.js"></script>
+
+		
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+		
+		<body>
+
+		<div id = "homebar" class = "nav">
+
+				<a href="#">Home </a>
+				<a href="#">Topics</a>
+				<a href="#">Profile</a>
+	
+		</div>
+		
+
+						
+		
+					
+		
+			<div id = "postbar" class = "postbar">
+			
+				<button id = "newPost"> New Toodle </button>
+				
+				<input type = "text" id = "postSub" style = "display:none;" placeholder = "topic"></input>
+				
+				<input type = "text" id = "postSub" style = "display:none;" placeholder = "subtopic"> </input>
+				
+				<button id= "sendPost" style = "display:none;">Toodle</button>
+				
+				<span id = "postText"?>
+					<input type = "text" id = "postText" style = "display:none;" placeholder = "Whats on your mind?"></input>
+				</span>
+
+		<div class = "main">
+			
+			<div class = "post" >
+
+																									<div class = "likebar" >
+			
+																										<span style="font-size: 48px; color: Dodgerblue;">
+																										
+																											<i class="fas fa-thumbs-up"></i>
+																										</span>	
+			
+																										<p class = "likes">45</p>
+				
+																									<span style="font-size: 48px; color: tomato;">
+																										<i class = "fas fa-thumbs-down"></i>
+																									</span>
+																									</div>
+																									<div class = "toolbar">
+															
+																									<span style="font-size: 32px; color: skyblue;">									
+
+				<a id = "comment_ct" style = "font-size:12px;font-weight:bold;font-family:Helvetica;color:skyblue;positon:absolute;">14</a>				
+				<i id = "comments" class="fas fa-comments"></i>
+																									</span>
+																									 <span style="font-size: 32px;color: white;">
+								
+																										 <i class="fas fa-edit"></i>
+																									</span>
+
+					
+																									<span style="font-size: 32px; color:red;">
+								
+								
+									
+					
+																										<i class= "fas fa-trash"></i>	
+																									</span>
+																									</div>
+			
+
+	
+																									<p class = "content"> </p>
+							
+			
+																									<div class = "origin">
+																									<a class = "topic"></a>
+																									<a class = "subtopic"></a>			
+																									<a class = "user" ></a>
+																									<li class = "postId" style = "display:none;"> </li>
+																									<a class = "date">11/9/19</a>
+
+																									</div>
+																								</div>
+
+				</div>
+												
+									
+																								<div id = "welcomeBar" class = "welcome">
+						
+				
+					
+																									<a id= "closebtn" class= "closebtn" >&times;</a>
+																									<p id = "p1"> Welcome to Toodles</p>
+																									<p id = "p2"> An Online Community to Share Anything You Want</p>	
+
+		       	<a href="register">Register</a>
+			<a id = "login">Login</a>
+		</div>
+
+		<script>
+
+			var uid = "";
+			var username ="";
+			var anon = false;
+			$(document).ready(function(){
+
+			var posts = [];
+			var og = document.getElementsByClassName("post")[0];
+	//		var og = document.getElementById("og");
+
+			/*	$(".post").on("click",".toolbar",function()
+					{
+						deleteToodle($(".toolbar").index(this))
+					});
+			*/
+				function closeWelcome()
+				{
+					document.getElementById("welcomeBar").style.height = "0%";
+
+				}
+				function openWelcome()
+				{	
+					document.getElementById("welcomeBar").style.height = "100%";    
+				}    
+
+				$("#closebtn").click(function()
+					{
+						closeWelcome();
+					});
+
+				
+				function showPost(par,post)
+				{
+
+					var node = par.cloneNode(true,true);
+					node.childNodes[3].childNodes[5].addEventListener('click',function()
+						{
+						//	var index = $( this).parentElement.index();
+							data = {"topic":node.childNodes[7].childNodes[1].textContent,"sub":node.childNodes[7].childNodes[3].textContent,"postId":node.childNodes[7].childNodes[7].textContent}
+							deleteToodle(0,data);
+							//getPosts
+						});
+					node.childNodes[1].childNodes[1].addEventListener('click',function()
+						{
+							var dis = {"dir":true,"topic":node.childNodes[7].childNodes[1].textContent,"sub":node.childNodes[7].childNodes[3].textContent,"postId":node.childNodes[7].childNodes[7].textContent};
+							updateLikes(dis);
+							//getPosts
+						});
+					node.childNodes[1].childNodes[5].addEventListener('click',function()
+						{
+							 var dis = {"dir":false,"topic":node.childNodes[7].childNodes[1].textContent,"sub":node.childNodes[7].childNodes[3].textContent,"postId":node.childNodes[7].childNodes[7].textContent};
+							updateLikes(dis);
+							//getPosts
+						});
+					node.childNodes[7].childNodes[1].textContent = post.topic;
+					node.childNodes[7].childNodes[3].textContent = post.subt;
+					node.childNodes[7].childNodes[9].textContent = post.timet.substring(0,15);
+					node.childNodes[5].textContent = post.content;
+					node.childNodes[7].childNodes[7].textContent = post.id;
+					node.childNodes[7].childNodes[5].textContent = post.user;
+					node.childNodes[1].childNodes[3].textContent = post.likes;
+					posts.push(node);
+					/**
+					for(int i = 0; i < posts.length; i++)
+					{
+						posts[i].childNodes[3].childNodes[3]
+					}
+					**/
+					par.after(node);
+					node.removeAttr("style").hide();
+					node.show();
+					return node;
+
+
+				}
+				var DB = firebase.database();
+
+				openWelcome();
+
+				function deleteToodle(index,data)
+					{
+						if(index >= 0)
+						{
+						var xml = new XMLHttpRequest();
+						xml.onreadystatechange = function()
+						{
+							if(this.status == 200 && this.readyState == 4)
+							{
+							
+				//				showPosts();
+							}
+							
+							}
+						xml.open("POST","api/delete");
+						firebase.auth().currentUser.getIdToken(/* forceRefresh */ true).then(function(idToken) {
+
+
+							
+							xml.setRequestHeader('Authorization','Bearer ' + idToken);
+
+							
+							xml.setRequestHeader('Content-Type','application/json');
+
+							
+							xml.setRequestHeader('Accept','application/json');
+
+							
+							
+		
+							var sendData  = JSON.stringify(data);
+							xml.send(sendData);
+						});
+						}
+						
+					}
+				
+				$("#login").click(function(){
+
+				var provider = new firebase.auth.GoogleAuthProvider();
+
+			  	
+				firebase.auth().signInWithPopup(provider).then(function(result){
+
+					uid = result.user.uid.toString();;
+						
+					DB.ref("/toodlers").child(result.user.uid).once('value',function(snapshot)
+						{
+							if(snapshot.val() !== null)
+							{
+								username = snapshot.val().username;
+								anon = snapshot.val().anon;
+							}
+							else
+							{
+								alert("This Google Account is not registered!");
+								location.replace("register");
+							}
+
+
+						});
+				
+				closeWelcome();
+				getPosts();
+			//	showPosts();
+						
+				  }).catch(function(error){
+						   
+				 			  // handle errors
+		 				 
+						 var errorCode = error.code;
+					
+						
+						 var errorMssg = error.message;
+			
+						 var email = error.email;
+				
+					});
+				})
+			  
+
+			
+			function getPosts(){
+			 DB.ref("/toodles").orderByChild("time").once('value',function(snap)                                                                                                            {
+				 var post = {topic:"",subt:"",likes:"",user:"",content:"",id:"",timet:""};
+				 snap.forEach(function(child)                                                                                                                                                          {
+						post.topic = child.key;
+					 child.forEach(function(snapshot)
+						 
+						 {
+							 post.subt = snapshot.key;
+							 snapshot.forEach(function(node)
+								 {
+							
+							 post.id = node.key;
+							 post.content = node.val().content;
+							 post.likes = node.val().likes;
+							 post.user = node.val().username;
+							 post.timet = node.val().time;
+							 og = showPost(og,post);
+								 });
+							 
+						 });
+				 });
+			 });
+			}
+				
+					
+			   $("#signup").click(function(){
+
+				   
+				   var xmlhttp = new XMLHttpRequest();   // new HttpRequest instance
+				   xmlhttp.onreadystatechange = function() {
+					       if (this.readyState == 4 && this.status == 200) {
+						              //document.getElementById("authstuff").innerHTML =
+							  //            this.responseText;
+						       location.replace("register");
+						           }
+					    };
+				   xmlhttp.open("GET", "register");
+				   xmlhttp.setRequestHeader("Content-Type", "charset=UTF-8");
+				   xmlhttp.send();
+				   
+
+				  // window.location("https://toodles-744da.web.app/register");
+			   });
+
+				
+				$("#newPost").click(function(){
+
+					$(".postText").removeAttr("style").hide();
+					$("#postTop").removeAttr("style").hide();
+					$("#postSub").removeAttr("style").hide();
+					$("#sendPost").removeAttr("style").hide();
+					$("#postTop").show();
+					$("#postTop").click(function(){
+					$("#postSub").show();
+					});
+					$("#postSub").click(function(){
+					$(".postText").show();
+					});
+					$(".postText").click(function(){
+
+					$("#sendPost").show()
+					});
+					$("#sendPost").click(function(){
+						var content = document.getElementById('postText').value;
+						var topic = document.getElementById('postTop').value;
+						var subtopic = document.getElementById('postSub').value;
+						createPost(content,topic,subtopic);
+					});
+				});
+
+			 function createPost(content,topic,subtopic)
+					{
+
+						var xml = new XMLHttpRequest();
+						var username = "";
+						var date = new Date();
+						var mins = date.toTimeString();
+						var time = date.toDateString();
+						time = time + mins;
+						xml.onreadystatechange = function()
+						{
+							if(this.readyState == 4 && this.status == 200)
+							{
+								//showToodles();
+							}
+						};
+
+							
+							if(anon == true)
+							{
+								username = "anonymous";
+							}
+							
+
+						xml.open("POST","api/newtoodle");
+
+						var data = {"content":content,"topic":topic,"sub":subtopic,"time":time,"username":username};
+						xml.contentType = 'application/json';
+						
+						firebase.auth().currentUser.getIdToken(/* forceRefresh */ true).then(function(idToken) {
+						
+							xml.setRequestHeader('Authorization','Bearer ' + idToken);
+							
+							xml.setRequestHeader('Content-Type','application/json');
+							
+							xml.setRequestHeader('Accept','application/json');
+							
+							var sendData = JSON.stringify(data);	
+							
+							xml.send(sendData);
+						
+					});
+				}
+
+			function updateLikes(data)
+					{
+						var xml = new XMLHttpRequest();
+						
+						xml.onreadystatechange = function(){
+						
+						if(this.readyState == 4 && this.status == 200)
+							
+							{
+							
+							//	showToodles();
+								
+							}
+							
+						};
+
+						
+						
+						xml.open("POST","api/like");
+						
+						xml.contentType = 'application/json';
+
+						firebase.auth().currentUser.getIdToken(/* forceRefresh */ true).then(function(idToken) {
+						xml.setRequestHeader('Authorization','Bearer ' + idToken);	
+						xml.setRequestHeader('Content-Type','application/json');							  
+						xml.setRequestHeader('Accept','application/json');													
+						var sendData = JSON.stringify(data);	
+						xml.send(sendData);
+										
+						});
+
+					}
+
+
+			});
+
+
+				   
+	</script>
+	</body>
+</html>

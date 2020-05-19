@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+		                                                                                                                                                                                    
+	<meta charset="utf-8">                                                                                                                                                                                                                                                                                                                                      <meta name="viewport" content="width=device-width, initial-scale=1">                                                                                                                                                                                                                                                                                        <title>Toodle Home</title>                                                                                                                                                                                                                                                                                                                                  <script defer src="/__/firebase/7.1.0/firebase-app.js"></script>                                                                                                              <script defer src="/__/firebase/7.1.0/firebase-database.js"></script>                                                                                                         <script defer src="/__/firebase/7.1.0/firebase-auth.js"></script>                                                                                                             <script defer src="/__/firebase/init.js"></script>                                                                                                                            <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>                                                                                     <h1>You're Home</h1>
+
+
+	
+	<div id = "homebar">
+	
+	
+		<ul>                                                                                                                                                          
+		
+			<li><a href="default.asp">Home></li>     
+			<li><a href="news.asp">Topics</a></li>    
+			<li><a href="contact.asp">Profile</a></li> 
+			<li><a href="about.asp">Settings</a></li>     
+			<button id="create"> Create Toodle </button>
+			
+		</ul>
+		
+	</div>
+
+	<div id="toodle">
+		<button id = "up">Like</button>
+		<button id = "down">Dislike</button>
+		<li id = "topic" ></li>
+		<li id = "sub"> </li>
+		<ul id = "username"></li>
+		<p id = "content"> </p>
+	</div>
+	<body>
+		<script>
+
+
+		$(document).ready(function(){
+
+			var DB = firebase.database();
+
+			var userKey = Object.keys(window.localStorage).filter(it => it.startsWith('firebase:authUser'))[0];
+
+			var user = userKey ? JSON.parse(localStorage.getItem(userKey)) : undefined;
+
+			console.log(user.uid);
+			
+		});
+
+		</script>
+
+	</body>
+
+</html>
+

@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html>
+
+	        <meta charset="utf-8">
+
+
+		
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+
+		
+		<title>Welcome to Firebase Hosting</title>
+		<script defer src="/__/firebase/7.1.0/firebase-app.js"></script>
+
+		       
+		<script defer src="/__/firebase/7.1.0/firebase-database.js"></script>
+		
+		<script defer src="/__/firebase/7.1.0/firebase-auth.js"></script>
+		
+		<script defer src="/__/firebase/init.js"></script>
+
+		
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
+		
+		</head>
+
+		
+		<body>
+		
+			<h2> People Online:<h2>
+			
+			<ul id="people"></ul>
+					
+			<div id="authstuff"></div>
+				
+			<div id="namestuff">
+				
+			<input type="text" id="myname" placeholder = "Hi, my name is" />
+					
+			<button type="button" id="join">Click to join></button>
+					
+			<button type="button" id="leave">Click to leave></button>
+					
+			<button type="button" id="edit">Click to edit</button>
+					
+			</div>
+
+		<script>
+
+			var uid = "";
+			$(document).ready(function(){		
+			var DB = firebase.database();
+			var provider = new firebase.auth.GoogleAuthProvider();
+			firebase.auth().signInWithPopup(provider).then(function(result){
+			var token = result.credential.accessToken;
+			var user = result.user;										                         
+			console.log(user);																				                         
+			$("authstuff").html(`<h1> Welcome ${user.displayName}</h1><p><img src="{user.photoURL}"</p>`);
+			uid = user.uid;
+		
+			}).catch(function(error){
+ // handle errors
+
+                         var errorCode = error.code;
+			 var errorMssg = error.message;	
+			 var email = error.email;			
+				
+			});
+
+
+																									 $("#join").click(function(){
+																									 	var name = $("#myname").val();
+				
+																										if(!!name)
+																										{																					 	DB.ref().child("toodlers/"+uid).set({name: name, online: true});	
+																										}
+			});
+	
+			$("#leave").click(function(){																									
+				DB.ref("toodlers/"+uid).remove();
+																									
+			});
+
+
+			$("#edit").click(function(){
+																										var name = $("#myname").val();
+																									
+				if(!!name){
+																									
+					DB.ref("toodlers/"+uid).child().update({name: name});
+				}
+																								
+			});
+																								   DB.ref("toodlers").on("value", function(snap){
+																								   $("#people").empty();
+																									
+		     var everyone = snap.val();
+																			
+		     for(var id in everyone){
+																					
+		     	if(everyone.hasOwnProperty(id))
+		
+			{
+			
+				let yourName = everyone[id].name;
+				$("#people").append(`<li>${yourName}</li>`);
+				
+			}																
+			}								
+		});
+	});
+	</script>
+	</body>
+</html>

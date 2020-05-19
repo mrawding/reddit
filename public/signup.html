@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html>
+	<title> Sign Up for Toodles </title>
+	<script defer src="/__/firebase/7.1.0/firebase-app.js"></script>                                                                                         
+
+
+	
+	<script defer src="/__/firebase/7.1.0/firebase-database.js"></script>
+	
+	<script defer src="/__/firebase/7.1.0/firebase-auth.js"></script>
+
+	<script defer src="/__/firebase/init.js"></script>
+
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
+	<h1>Sign Up for Toodles</h1>
+	<div id = "signupfields" >
+		<p> "All Toodlers must register under Google Sign-on" </p>
+		<button id = "google" >Google Sign-on</button>
+		<input type="text" id = "first"  style="display:none;" placeholder="First Name"></input>
+		<input type="text" id = "last" style="display:none;" placeholder="Last Name"></input>
+		<input type="text" id = "display" style="display:none;" placeholder="Display Name"></input>
+		<input type="radio" id="anon" style="display:none;">Click For Anonymous mode</button>
+		<button id = "submit" style ="display:none;">Finish</button>
+	</div>
+
+	<script>
+		$(document).ready(function(){
+	
+			var DB = firebase.database();
+			var user;
+			var token = "";
+			var uid = "";
+			var firstName = "";
+			var lastName = "";
+			var username = "";
+			var anon = false;
+			$("#google").click(function()
+				{
+				var provider = new firebase.auth.GoogleAuthProvider();
+				firebase.auth().signInWithPopup(provider).then(function(result){
+					token = result.credential.accessToken;
+					uid = result.user.uid;
+					user = result.user;
+					var ref = DB.ref("toodlers/");
+					ref.once("value")
+					.then(function(snapshot)
+						{
+							if(snapshot.child(uid).exists())
+
+					{
+						alert("Account already exists!");
+					}
+					else{
+					$("#first").removeAttr("style").hide();
+					$("#first").show();
+					}
+						});
+				});
+			});
+			
+			$("#first").click(function()
+				{
+					$("#last").removeAttr("style").hide();  
+					
+					$("#last").show();
+				});
+
+			
+			$("#last").click(function()                                                                                                                                
+				
+				{ 
+					
+					$("#display").removeAttr("style").hide();   
+					
+					$("#display").show();  
+				});               
+			$("#display").click(function()
+				{
+					$("#anon").removeAttr("style").hide();
+					$("#anon").show();
+					$("#submit").removeAttr("style").hide();     
+					$("#submit").show(); 
+				});
+
+			$("#anon").click(function()
+				{
+					anon = !anon;
+					document.getElementById('anon').checked = anon;
+					
+				});
+
+
+			let checkExisting = function(name){
+				
+				var ref = DB.ref("/usedNames");
+
+				ref.once("value").then(function(snapshot1)
+				{
+					if(snapshot1.child("names").exists())
+					{
+						ref.child("names").orderByValue().startAt(name.charAt(0)).endAt(name.charAt(0)+"\uf8ff").on("value",function(snapshot)
+								
+						{
+							snapshot.forEach(function(data){
+							
+								if(data.val() == name)
+								{
+							
+
+									console.log("exists");
+									alert("Username already exists!");
+									return 0;
+						
+								}
+								else
+								{
+									console.log("doesnt exist");
+									return 1;
+								}
+					
+							});
+						})
+					}
+					else
+					{
+			
+						return 1;
+					};
+						
+	
+				});
+			}
+
+			$("#submit").click(function()
+				{
+
+				
+					xml = new XMLHttpRequest();
+						
+					username = document.getElementById('display').value;
+					
+					var existing_name = 0;
+					
+					existing_name = checkExisting(username);
+				
+					console.log(existing_name);
+
+					if(existing_name == 0)
+					{
+						document.getElementById('display').value = "";
+					}
+
+					else
+					{
+
+					lastName = document.getElementById('last').value;
+					firstName = document.getElementById('first').value;
+					var data = {"u":username,"l":lastName,"f":firstName, "a":anon};
+					                           
+					xml.onreadystatechange = function() {
+					
+						if (this.readyState == 4 && this.status == 200) {
+						
+							//document.getElementById("authstuff").innerHTML =
+							
+							//            this.responseText;
+							location.replace("home");
+							
+							
+						}
+					};
+					        
+					xml.open("POST","api/newuser");
+					xml.contentType = 'application/json';
+					firebase.auth().currentUser.getIdToken(/* forceRefresh */ true).then(function(idToken) {
+					xml.setRequestHeader('Authorization','Bearer ' + idToken);
+					xml.setRequestHeader('Content-Type','application/json');	
+					xml.setRequestHeader('Accept','application/json');
+					var sendData = JSON.stringify(data);
+					console.log(idToken);
+					console.log(data);
+					xml.send(sendData);
+					});
+				
+					}
+				});	
+
+				
+				
+		});
+	</script>
+</html>
