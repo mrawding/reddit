@@ -57,13 +57,13 @@ app.post('/api/newuser', async (req,res) => {
 	console.log(data);
 		// create user under toodlers
 	const snapshot = await admin.database().ref('/toodlers').child(`/${req.user.uid}`).set({admin: false,username: data.u,anon:data.a,toodles:0,liked:0,disliked:0});
-	
+
 	admin.database().ref('/usedNames').child("names").orderByValue().startAt(data.u.charAt(0)).endAt(data.u.charAt(0)+"\uf8ff").on("value",function(snapshot)
 		{
 			snapshot.forEach(function(userName)
 				{
 					if(userName.val().toString() === data.u.toString())
-					
+
 					{
 						input_flag = 1;
 						return;
@@ -75,7 +75,7 @@ app.post('/api/newuser', async (req,res) => {
 		{
 			console.log("input flag =" + input_flag);
 			const snapshot1 = await admin.database().ref('/usedNames').child("names").push(data.u);
-					
+
 		}
 
 
@@ -104,19 +104,20 @@ app.post('/api/newtoodle', (req,res) => {
 			{
 				data.username = snap.val().username;
 			}
-		
+
 	const snapshot = admin.database().ref('/toodles').child(`/${data.topic}`).child(`/${data.sub}`).push(
 		{
 			content: data.content,
 			uid: req.user.uid,
 			username: data.username,
 			time: data.time,
-			likes: 0
+			likes: 0,
+			img: data.img
 		});
-	
-	
+
+
 	postId = snapshot.key;
-	
+
 	const snapshot1 = admin.database().ref('/toodlers').child(`/${req.user.uid}`).child('toodles').push({toodleID:postId});
 
 	});
@@ -128,8 +129,36 @@ app.post('/api/newtoodle', (req,res) => {
 	}
 });
 
+app.post('/api/comment',(req,res) =>
+{
+	const data = req.body;
+	console.log(data);
+	try{
+		const snap = admin.database().ref('/toodles').child(`/${data.topic}`).child(`/${data.sub}`).child(`/${data.id}`).child('comments').push(
+			{
+				content:data.content,
+				uid:req.user.uid,
+				username: data.username,
+				time: data.time,
+				likes: 0,
+				comments:""
+			}
+		);
+
+		var commentId = snap.key;
+		const snapshot1 = admin.database().ref('/toodlers').child(`/${req.user.uid}`).child('toodles').push({toodleID:commentId});
+		res.sendStatus(200);
+	}
+	catch(err)
+	{
+		console.log(err);
+		res.sendStatus(500);
+	}
+});
+
 app.post('/api/delete',(req,res) => {
 	const data = req.body;
+	console.log(req.body);
 	try{
 
 		// must be admin or owner of post to remove
@@ -144,23 +173,31 @@ app.post('/api/delete',(req,res) => {
 					admin.database().ref('toodlers').child(`/${req.user.uid}`).child('toodles').child(`/${snap.key}`).remove();
 
 				}
-			
-			});	
-			admin.database().ref('/toodles').child(`/${data.topic}`).child(`/${data.sub}`).once("value",function(snapshot){
-				if(role.val().admin === true || snapshot.child(`/${data.postId}`).val().uid === req.user.uid)
+
+			});
+			var reference = "/toodles/" + data.topic + '/' + data.sub;
+			var ref1 = data.postId;
+			if(data.Id_chain.length > 0)
+			{
+				for (var i = data.Id_chain.length - 1; i >= 0; i--) {
+						ref1 += "/comments/" + data.Id_chain[i];
+				}
+
+			}
+		//	admin.database().ref('/toodles').child(`/${data.topic}`).child(`/${data.sub}`).once("value",function(snapshot){
+			admin.database().ref(reference).once("value",function(snapshot){
+				//if(role.val().admin === true || snapshot.child(`/${data.postId}`).val().uid === req.user.uid)
+				if(role.val().admin === true || snapshot.child(`/${ref1}`).val().uid === req.user.uid)
 				{
-
-					
-					admin.database().ref('toodles').child(`/${data.topic}`).child(`/${data.sub}`).child(`/${data.postId}`).remove();
-
-					res.sendStatus(200);
+						admin.database().ref(reference).child(`/${ref1}`).remove();
+						res.sendStatus(200);
 				}
 				else
 				{
 					res.sendStatus(400);
 				}
 				});
-			
+
 		});
 	}
 	catch(err)
@@ -172,9 +209,10 @@ app.post('/api/delete',(req,res) => {
 
 app.post('/api/like',(req,res) =>{
 	const data = req.body;
-	var count;
-	 admin.database().ref('/toodles').child(`/${data.topic}`).child(`/${data.sub}`).child(`/${data.postId}`).once("value",function(snap1){
+	var count,id;
+	 admin.database().ref('/toodles').child(path).once("value",function(snap1){
 		count = snap1.val().likes;
+		id = snap1.key();
 		console.log("like count = " + count);
 	});
 	if(data.dir === false)
@@ -182,13 +220,14 @@ app.post('/api/like',(req,res) =>{
 		console.log("data.dir was false");
 		try {
 
-			admin.database().ref('/toodlers').child(`/${req.user.uid}`).child('likes').child(`/${data.postId}`).once("value",function(snap){
+			admin.database().ref('/toodlers').child(`/${req.user.uid}`).child('likes').child(`/${id}`).once("value",function(snap){
 				if(snap.val() === true || snap.val() === null)
 				{
 					console.log("liked status was true");
-					admin.database().ref('/toodlers').child(`/${req.user.uid}`).child('likes').set({[data.postId]:false});
+					admin.database().ref('/toodlers').child(`/${req.user.uid}`).child('likes').set({[id]:false});
 					count -= 1;
-					admin.database().ref('/toodles').child(`/${data.topic}`).child(`/${data.sub}`).child(`/${data.postId}`).update({likes:count});
+				//	admin.database().ref('/toodles').child(`/${data.topic}`).child(`/${data.sub}`).child(`/${data.postId}`).update({likes:count});
+				admin.database().ref('/toodles').child(data.path).update({likes:count});
 
 				}
 			});
@@ -202,29 +241,29 @@ app.post('/api/like',(req,res) =>{
 	else if(data.dir === true)
 	{
 			console.log("data.dir was false");
-			
+
 			try {
 
-				admin.database().ref('/toodlers').child(`/${req.user.uid}`).child('likes').child(`/${data.postId}`).once("value",function(snap){				
+				admin.database().ref('/toodlers').child(`/${req.user.uid}`).child('likes').child(`/${data.postId}`).once("value",function(snap){
 					if(snap.val() === false || snap.val() === null)
 					{
 						console.log("liked status was true");
-						
+
 						admin.database().ref('/toodlers').child(`/${req.user.uid}`).child('likes').set({[data.postId]:true});
-						
+
 						count += 1;
-						
+
 						admin.database().ref('/toodles').child(`/${data.topic}`).child(`/${data.sub}`).child(`/${data.postId}`).update({likes:count});
-						
+
 					}
 				});
-				
+
 				res.sendStatus(200);
 			}
 			catch(err){
-			
+
 				console.log("Dislike error" + err);
-				
+
 				res.sendStatus(500);
 			}
 		}
@@ -234,48 +273,7 @@ app.post('/api/like',(req,res) =>{
 		}
 });
 
-app.get('/api/posts', async(req,res) => {
 
-	var data = '{"posts":[]}';
-	var obj = JSON.parse(data);
-	var post;
-	try
-	{
-		 admin.database().ref('/toodles').orderByKey().on("value",function(snapshot)
-			 {
-				 snapshot.forEach.function(topic)
-				 {
-					 post.topic = topic.key;
-					 snapshot.child(post.topic).forEach.function(sub)
-					 {
-						 post.sub = sub.key
-						 snapshot.child(post.topic).child(post.sub).forEach.function(id)
-						 {
-
-							post.id = id.key;
-							post.time = snapshot.child(post.topic).child(post.sub).child(post.id).child(time).val();
-							post.content = snapshot.child(post.topic).child(post.sub).child(post.id).child(time).val();
-							post.username = snapshot.child(post.topic).child(post.sub).child(post.id).child(username).val();
-							post.uid = snapshot.child(post.topic).child(post.sub).child(post.id).child(uid).val();
-							post.likes = snapshot.child(post.topic).child(post.sub).child(post.id).child(likes).val();
-							obj['posts'].append(JSON.stringify(post));
-						}
-					 }
-				 }
-			 
-			 });
-			
-			 data = JSON.stringify(obj);
-			 res.status(200).send(data);
-	}
-	catch(err)
-	{
-		console.log("Error getting posts: " + err);
-		res.sendStatus(500)
-	}
-
-
-});
 
 
 //app.get('/newuser',(req,res));

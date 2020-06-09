@@ -4,124 +4,172 @@
 	        <meta charset="utf-8">
 
 		<head>
-			<link rel="stylesheet" href="styles.css">
+			<link rel="stylesheet" href="styles1.css">
 			<script src="https://kit.fontawesome.com/3176c467ca.js" crossorigin="anonymous"></script>
 		</head>
-	
+
 
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 
-		
+
 		<title>Welcome to Firebase Hosting</title>
 		<script defer src="/__/firebase/7.1.0/firebase-app.js"></script>
 
-		       
+
 		<script defer src="/__/firebase/7.1.0/firebase-database.js"></script>
-		
+
 		<script defer src="/__/firebase/7.1.0/firebase-auth.js"></script>
-		
+
 		<script defer src="/__/firebase/init.js"></script>
 
-		
+
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-		
-		<body>
+
+		<body style = "background:chartreuse;">
 
 		<div id = "homebar" class = "nav">
 
 				<a href="#">Home </a>
 				<a href="#">Topics</a>
 				<a href="#">Profile</a>
-	
+
 		</div>
-		
 
-						
-		
-					
-		
-			<div id = "postbar" class = "postbar">
-			
-				<button id = "newPost"> New Toodle </button>
-				
-				<input type = "text" id = "postSub" style = "display:none;" placeholder = "topic"></input>
-				
-				<input type = "text" id = "postSub" style = "display:none;" placeholder = "subtopic"> </input>
-				
-				<button id= "sendPost" style = "display:none;">Toodle</button>
-				
-				<span id = "postText"?>
-					<input type = "text" id = "postText" style = "display:none;" placeholder = "Whats on your mind?"></input>
+			<div class = "postText">
+
+				<div class = "postorigin">
+							<input list = "topic-list" type = "text" id = "inp_topic" class = "topic" placeholder = "topic"></input>
+							<input list = "subtopic-list"type = "text" id = "inp_subtopic" class = "subtopic" placeholder = "subtopic"></input>
+							<datalist id = "topic-list">
+							</datalist>
+							<datalist id = "subtopic-list">
+							</datalist>
+				</div>
+				<div class = "caption">
+					<textarea placeholder = "Whats on your mind?"></textarea>
+				</div>
+				<button id = "newPost">Toodle </button>
+				<span id = "uploadImage" >
+					<label for="file-input">
+						<span style="font-size: 48px; color: Dodgerblue;">
+							<i class = "fas fa-camera-retro"></i>
+						</span>
+						</label>
+					<input type="file" id="file-input" name="img" accept="image/*" style = "display:none;">
 				</span>
+				<div>
+					<a id= "closebtn1" class= "closebtn1" >&times;</a>
+					<img id="imgs" src="#" >
+				</div>
 
-		<div class = "main">
-			
+</div>
+
+
+
 			<div class = "post" >
 
+
 																									<div class = "likebar" >
-			
+
 																										<span style="font-size: 48px; color: Dodgerblue;">
-																										
+
 																											<i class="fas fa-thumbs-up"></i>
-																										</span>	
-			
+																										</span>
+
 																										<p class = "likes">45</p>
-				
+
 																									<span style="font-size: 48px; color: tomato;">
 																										<i class = "fas fa-thumbs-down"></i>
 																									</span>
 																									</div>
-																									<div class = "toolbar">
-															
-																									<span style="font-size: 32px; color: skyblue;">									
-
-				<a id = "comment_ct" style = "font-size:12px;font-weight:bold;font-family:Helvetica;color:skyblue;positon:absolute;">14</a>				
-				<i id = "comments" class="fas fa-comments"></i>
-																									</span>
-																									 <span style="font-size: 32px;color: white;">
-								
-																										 <i class="fas fa-edit"></i>
-																									</span>
-
-					
-																									<span style="font-size: 32px; color:red;">
-								
-								
-									
-					
-																										<i class= "fas fa-trash"></i>	
-																									</span>
-																									</div>
-			
-
-	
-																									<p class = "content"> </p>
-							
-			
 																									<div class = "origin">
 																									<a class = "topic"></a>
-																									<a class = "subtopic"></a>			
+																									<a class = "subtopic"></a>
 																									<a class = "user" ></a>
 																									<li class = "postId" style = "display:none;"> </li>
 																									<a class = "date">11/9/19</a>
-
 																									</div>
+																									<div class = "toolbar">
+																									<span style="font-size: 32px; color: skyblue;">
+				<a id = "comment_ct" style = "display:none;font-size:12px;font-weight:bold;font-family:Helvetica;color:skyblue;positon:absolute;"></a>
+				<i id = "comments" class="fas fa-comments"></i>
+																									</span>
+																									 <span style="font-size: 32px;color: white;">
+
+																										 <i class="fas fa-edit"></i>
+																									</span>
+																									<span style="font-size: 32px; color:red;">
+																										<i class= "fas fa-trash"></i>
+																									</span>
+																									</div>
+																									<p class = "content"> </p>
+																									<div class = "img-container">
+																									<img class = "post_im" src = "#"></img>
+																									</div>
+																									<p class = "path" style = "display:none;"></p>
+
+
 																								</div>
 
-				</div>
-												
-									
+
+
 																								<div id = "welcomeBar" class = "welcome">
-						
-				
-					
+
+
+
 																									<a id= "closebtn" class= "closebtn" >&times;</a>
 																									<p id = "p1"> Welcome to Toodles</p>
-																									<p id = "p2"> An Online Community to Share Anything You Want</p>	
+																									<p id = "p2"> An Online Community to Share Anything You Want</p>
 
 		       	<a href="register">Register</a>
 			<a id = "login">Login</a>
 		</div>
+
+
+		<div class = "commentbar" >
+			<input type = text placeholder="Type Comment here"></input>
+			<span style = "font-size:20px;color:Dodgerblue;">
+				<i class = "fas fa-paper-plane"></i>
+			</span>
+		</div>
+
+		<div class = "comment" >
+
+			<div class = "c_likebar" >
+
+				<span style="font-size: 24px; color: Dodgerblue;">
+
+					<i class="fas fa-thumbs-up"></i>
+				</span>
+
+				<p class = "c_likes"></p>
+
+			<span style="font-size: 24px; color: tomato;">
+				<i class = "fas fa-thumbs-down"></i>
+			</span>
+			</div>
+			<div class = "c_origin">
+			<a class = "user" ></a>
+			<li class = "postId" style = "display:none;"> </li>
+			<a class = "date"></a>
+			</div>
+			<div class = "toolbar">
+			<span style="font-size: 18px; color: skyblue;">
+<a id = "comment_ct" style = "display:none;font-size:12px;font-weight:bold;font-family:Helvetica;color:skyblue;positon:absolute;">14</a>
+<i id = "comments" class="fas fa-comments"></i>
+			</span>
+			 <span style="font-size: 18px;color: white;">
+
+				 <i class="fas fa-edit"></i>
+			</span>
+			<span style="font-size: 18px; color:red;">
+				<i class= "fas fa-trash"></i>
+			</span>
+			</div>
+			<p class = "content"> </p>
+			<p class = "path" style = "display:none;"></p>
+	</div>
+
 
 		<script>
 
@@ -130,61 +178,111 @@
 			var anon = false;
 			$(document).ready(function(){
 
+
+
+
+		function readURL(input) {
+	  	if (input.files && input.files[0]) {
+	    	var reader = new FileReader();
+
+	    	reader.onload = function(e) {
+
+	      $('#imgs').attr('src', e.target.result);
+				document.getElementById('imgs').style.display = 'block';
+				document.getElementById('closebtn1').style.display = 'block';
+					document.getElementById('uploadImage').style.display = 'none';
+	    }
+
+	    reader.readAsDataURL(input.files[0]); // convert to base64 string
+	  }
+	}
+
+	$("#file-input").change(function() {
+	  readURL(this);
+	});
+
 			var posts = [];
 			var og = document.getElementsByClassName("post")[0];
-	//		var og = document.getElementById("og");
-
-			/*	$(".post").on("click",".toolbar",function()
-					{
-						deleteToodle($(".toolbar").index(this))
-					});
-			*/
 				function closeWelcome()
 				{
 					document.getElementById("welcomeBar").style.height = "0%";
 
 				}
 				function openWelcome()
-				{	
-					document.getElementById("welcomeBar").style.height = "100%";    
-				}    
+				{
+					document.getElementById("welcomeBar").style.height = "100%";
+				}
 
 				$("#closebtn").click(function()
 					{
 						closeWelcome();
 					});
 
-				
+				$("#closebtn1").click(function()
+						{
+							$('#imgs').attr('src',"");
+						 	document.getElementById('imgs').style.display = 'none';
+							document.getElementById('uploadImage').style.display = 'block';
+							document.getElementById('closebtn1').style.display = 'none';
+						});
+
 				function showPost(par,post)
 				{
 
 					var node = par.cloneNode(true,true);
-					node.childNodes[3].childNodes[5].addEventListener('click',function()
+					if(document.getElementsByClassName("post")[0].style.display != "none")
+					{
+						document.getElementsByClassName("post")[0].style.display = "none";
+					}
+					node.childNodes[5].childNodes[5].addEventListener('click',function()
 						{
 						//	var index = $( this).parentElement.index();
-							data = {"topic":node.childNodes[7].childNodes[1].textContent,"sub":node.childNodes[7].childNodes[3].textContent,"postId":node.childNodes[7].childNodes[7].textContent}
+							data = {"topic":node.childNodes[3].childNodes[1].textContent,"sub":node.childNodes[3].childNodes[3].textContent,"postId":node.childNodes[3].childNodes[7].textContent,"iD_chain":[]};
 							deleteToodle(0,data);
 							//getPosts
 						});
+
+					node.childNodes[5].childNodes[1].addEventListener('click',function()
+					{
+						console.log('clicked');
+					  getComments(node.childNodes[11].textContent,node);
+					//	togComments(node.childNodes[3].childNodes[7].textContent,node.childNodes[3].childNodes[1].textContent,node.childNodes[3].childNodes[3].textContent,node);
+					});
+
+					node.childNodes[5].childNodes[3].addEventListener('click',function()
+					{
+						var data = {"topic":node.childNodes[3].childNodes[1].textContent,"sub":node.childNodes[3].childNodes[3].textContent,"postId":node.childNodes[3].childNodes[7].textContent};
+						openCommentBar(data,node);
+					});
 					node.childNodes[1].childNodes[1].addEventListener('click',function()
 						{
-							var dis = {"dir":true,"topic":node.childNodes[7].childNodes[1].textContent,"sub":node.childNodes[7].childNodes[3].textContent,"postId":node.childNodes[7].childNodes[7].textContent};
+							var dis = {"dir":true,"topic":node.childNodes[3].childNodes[1].textContent,"sub":node.childNodes[3].childNodes[3].textContent,"postId":node.childNodes[3].childNodes[7].textContent};
 							updateLikes(dis);
 							//getPosts
 						});
 					node.childNodes[1].childNodes[5].addEventListener('click',function()
 						{
-							 var dis = {"dir":false,"topic":node.childNodes[7].childNodes[1].textContent,"sub":node.childNodes[7].childNodes[3].textContent,"postId":node.childNodes[7].childNodes[7].textContent};
+							 var dis = {"dir":false,"topic":node.childNodes[3].childNodes[1].textContent,"sub":node.childNodes[3].childNodes[3].textContent,"postId":node.childNodes[3].childNodes[7].textContent};
 							updateLikes(dis);
 							//getPosts
 						});
-					node.childNodes[7].childNodes[1].textContent = post.topic;
-					node.childNodes[7].childNodes[3].textContent = post.subt;
-					node.childNodes[7].childNodes[9].textContent = post.timet.substring(0,15);
-					node.childNodes[5].textContent = post.content;
-					node.childNodes[7].childNodes[7].textContent = post.id;
-					node.childNodes[7].childNodes[5].textContent = post.user;
+					node.childNodes[3].childNodes[1].textContent = post.topic;
+					node.childNodes[3].childNodes[3].textContent = post.subt;
+					node.childNodes[3].childNodes[9].textContent = post.timet.substring(0,15);
+					node.childNodes[7].textContent = post.content;
+					node.childNodes[3].childNodes[7].textContent = post.id;
+					node.childNodes[3].childNodes[5].textContent = post.user;
 					node.childNodes[1].childNodes[3].textContent = post.likes;
+					if(post.img != "https://toodles-744da.firebaseapp.com/#"){
+					node.childNodes[9].childNodes[1].src = post.img;
+				}
+				else {
+
+					node.childNodes[9].childNodes[1].style.display = "none";
+
+				}
+
+				  node.childNodes[11].textContent = post.path;
 					posts.push(node);
 					/**
 					for(int i = 0; i < posts.length; i++)
@@ -192,17 +290,16 @@
 						posts[i].childNodes[3].childNodes[3]
 					}
 					**/
+
 					par.after(node);
-					node.removeAttr("style").hide();
-					node.show();
+					//node.removeAttr("style").hide();
+
 					return node;
-
-
 				}
 				var DB = firebase.database();
 
 				openWelcome();
-
+				getTopics();
 				function deleteToodle(index,data)
 					{
 						if(index >= 0)
@@ -212,43 +309,70 @@
 						{
 							if(this.status == 200 && this.readyState == 4)
 							{
-							
+
 				//				showPosts();
 							}
-							
+
 							}
 						xml.open("POST","api/delete");
 						firebase.auth().currentUser.getIdToken(/* forceRefresh */ true).then(function(idToken) {
-
-
-							
 							xml.setRequestHeader('Authorization','Bearer ' + idToken);
-
-							
 							xml.setRequestHeader('Content-Type','application/json');
-
-							
 							xml.setRequestHeader('Accept','application/json');
-
-							
-							
-		
 							var sendData  = JSON.stringify(data);
 							xml.send(sendData);
 						});
 						}
-						
+
 					}
-				
+
+				function getTopics()
+				{
+					DB.ref("/toodles").once('value',function(snap)
+					{
+						snap.forEach(function(child)
+          {
+	 						topic = child.key;
+							var node = document.getElementById("topic-list");
+							var optionNode = document.createElement("option");
+							optionNode.value = topic;
+							node.appendChild(optionNode);
+					});
+
+					});
+				}
+
+				function getSubtopics(topic)
+				{
+					DB.ref("/toodles/"+topic).once('value',function(snap)
+					{
+						snap.forEach(function(child)
+          {
+	 						topic = child.key;
+							var node = document.getElementById("subtopic-list");
+							var optionNode = document.createElement("option");
+							optionNode.value = topic;
+							node.appendChild(optionNode);
+					});
+
+					});
+
+				}
+
+				$("#inp_subtopic").click(function(){
+					var topic = document.getElementById("inp_topic").value
+					getSubtopics(topic)
+				});
+
 				$("#login").click(function(){
 
 				var provider = new firebase.auth.GoogleAuthProvider();
 
-			  	
+
 				firebase.auth().signInWithPopup(provider).then(function(result){
 
 					uid = result.user.uid.toString();;
-						
+
 					DB.ref("/toodlers").child(result.user.uid).once('value',function(snapshot)
 						{
 							if(snapshot.val() !== null)
@@ -264,101 +388,29 @@
 
 
 						});
-				
+
 				closeWelcome();
 				getPosts();
+				getTopics();
 			//	showPosts();
-						
+
 				  }).catch(function(error){
-						   
+
 				 			  // handle errors
-		 				 
+
 						 var errorCode = error.code;
-					
-						
+
+
 						 var errorMssg = error.message;
-			
+
 						 var email = error.email;
-				
+
 					});
 				})
-			  
 
-			
-			function getPosts(){
-			 DB.ref("/toodles").orderByChild("time").once('value',function(snap)                                                                                                            {
-				 var post = {topic:"",subt:"",likes:"",user:"",content:"",id:"",timet:""};
-				 snap.forEach(function(child)                                                                                                                                                          {
-						post.topic = child.key;
-					 child.forEach(function(snapshot)
-						 
-						 {
-							 post.subt = snapshot.key;
-							 snapshot.forEach(function(node)
-								 {
-							
-							 post.id = node.key;
-							 post.content = node.val().content;
-							 post.likes = node.val().likes;
-							 post.user = node.val().username;
-							 post.timet = node.val().time;
-							 og = showPost(og,post);
-								 });
-							 
-						 });
-				 });
-			 });
-			}
-				
-					
-			   $("#signup").click(function(){
-
-				   
-				   var xmlhttp = new XMLHttpRequest();   // new HttpRequest instance
-				   xmlhttp.onreadystatechange = function() {
-					       if (this.readyState == 4 && this.status == 200) {
-						              //document.getElementById("authstuff").innerHTML =
-							  //            this.responseText;
-						       location.replace("register");
-						           }
-					    };
-				   xmlhttp.open("GET", "register");
-				   xmlhttp.setRequestHeader("Content-Type", "charset=UTF-8");
-				   xmlhttp.send();
-				   
-
-				  // window.location("https://toodles-744da.web.app/register");
-			   });
-
-				
-				$("#newPost").click(function(){
-
-					$(".postText").removeAttr("style").hide();
-					$("#postTop").removeAttr("style").hide();
-					$("#postSub").removeAttr("style").hide();
-					$("#sendPost").removeAttr("style").hide();
-					$("#postTop").show();
-					$("#postTop").click(function(){
-					$("#postSub").show();
-					});
-					$("#postSub").click(function(){
-					$(".postText").show();
-					});
-					$(".postText").click(function(){
-
-					$("#sendPost").show()
-					});
-					$("#sendPost").click(function(){
-						var content = document.getElementById('postText').value;
-						var topic = document.getElementById('postTop').value;
-						var subtopic = document.getElementById('postSub').value;
-						createPost(content,topic,subtopic);
-					});
-				});
-
-			 function createPost(content,topic,subtopic)
+				function sendComment(data,content)
+				{
 					{
-
 						var xml = new XMLHttpRequest();
 						var username = "";
 						var date = new Date();
@@ -372,63 +424,273 @@
 								//showToodles();
 							}
 						};
-
-							
 							if(anon == true)
 							{
 								username = "anonymous";
 							}
-							
+						xml.open("POST","api/comment");
+
+						var data = {"content":content.value,"topic":data.topic,"sub":data.sub,"time":time,"username":username,"id":data.postId};
+						xml.contentType = 'application/json';
+
+						firebase.auth().currentUser.getIdToken(/* forceRefresh */ true).then(function(idToken) {
+
+							xml.setRequestHeader('Authorization','Bearer ' + idToken);
+
+							xml.setRequestHeader('Content-Type','application/json');
+
+							xml.setRequestHeader('Accept','application/json');
+
+							var sendData = JSON.stringify(data);
+
+							xml.send(sendData);
+					});
+				}
+			}
+
+				function showComments(comment,node)
+				{
+						var cbar = document.getElementsByClassName("comment")[0].cloneNode(true,true);
+						cbar.childNodes[3].childNodes[1].textContent = comment.user;
+						cbar.childNodes[3].childNodes[5].textContent = comment.timet.substring(0,15);
+						cbar.childNodes[7].textContent = comment.content;
+						cbar.childNodes[9].textContent = comment.path;
+						cbar.childNodes[3].childNodes[3].textContent = comment.id;
+						cbar.childNodes[1].childNodes[3].textContent = comment.likes;
+						cbar.childNodes[1].childNodes[1].addEventListener('click',function()
+					{
+
+
+					});
+					cbar.childNodes[1].childNodes[1].addEventListener('click',function()
+				{
+					var data = {"dir":true,"path":par.childNodes[7].textContent};
+					updateLikes(data);
+
+				});
+				 cbar.childNodes[1].childNodes[5].addEventListener('click',function()
+				 {
+
+					var data = {"dir":false,"path":par.childNodes[7].textContent};
+	 				updateLikes(data);
+					 //update comment likes
+				 });
+				 cbar.childNodes[5].childNodes[1].addEventListener('click',function()
+				 {
+					 var par = cbar;
+					 var comment_idChain = [];
+					 while(par.className != "post")
+					 {
+						 comment_idChain.push(par.childNodes[3].childNodes[3].textContent);
+						 par = par.parentElement;
+
+					 }
+					 var data = cbar.childNodes[9].textContent;
+					 getComments(data,cbar);
+
+				 });
+				 cbar.childNodes[5].childNodes[3].addEventListener('click',function()
+				 {
+					 var par = cbar;
+					 var comment_idChain = [];
+					 while(par.className != "post")
+					 {
+						 comment_idChain.push(par.childNodes[3].childNodes[3].textContent);
+						 par = par.parentElement;
+
+					 }
+					 var data = {"topic":par.childNodes[3].childNodes[1].textContent,"sub":par.childNodes[3].childNodes[3].textContent,"postId":par.childNodes[3].childNodes[7].textContent,"commentId":cbar.childNodes[3].childNodes[3].textContent,"Id_chain":comment_idChain};
+					 openCommentBar(data,cbar);
+				 });
+				 cbar.childNodes[5].childNodes[5].addEventListener('click',function()
+			 {
+
+				 var par = cbar;
+				 var comment_idChain = [];
+				 while(par.className != "post")
+				 {
+					 comment_idChain.push(par.childNodes[3].childNodes[3].textContent);
+					 par = par.parentElement;
+
+				 }
+				 var data = {"topic":par.childNodes[3].childNodes[1].textContent,"sub":par.childNodes[3].childNodes[3].textContent,"postId":par.childNodes[3].childNodes[7].textContent,"commentId":cbar.childNodes[3].childNodes[3].textContent,"Id_chain":comment_idChain};
+				 deleteToodle(0,data);
+			 });
+			 		  cbar.style.display = "block";
+						node.appendChild(cbar);
+				}
+
+
+
+				function openCommentBar(data,node)
+				{
+					var cbar = document.getElementsByClassName("commentbar")[0].cloneNode(true,true);
+					cbar.childNodes[3].addEventListener('click',function()
+					{
+						sendComment(data,cbar.childNodes[1]);
+						cbar.style.display = "none";
+					});
+					cbar.style.display = "block";
+					node.appendChild(cbar);
+				}
+
+				function getComments(path,node)
+				{
+					var comments = [];
+					console.log(path + "/comments/");
+					DB.ref("/toodles").child(path).child("comments").once('value',function(snap)
+					{
+						snap.forEach(function(child)
+
+							{
+								var comment = {likes:"",user:"",content:"",id:"",timet:"",path: ""};
+								comment.id = child.key;
+								comment.content = child.val().content;
+								comment.timet = child.val().time.substr(0,15);
+								comment.likes = child.val().likes;
+								comment.user = child.val().username;
+								comment.path = child.ref.toString().substring(44)
+								comments.push(comment);
+								showComments(comment,node);
+							});
+						});
+				return comments;
+			}
+
+
+
+			function getPosts(){
+			 DB.ref("/toodles").orderByChild("time").once('value',function(snap)                                                                                                            {
+				 var post = {topic:"",subt:"",likes:"",user:"",content:"",id:"",timet:"",path:""};
+				 snap.forEach(function(child)                                                                                                                                                          {
+						post.topic = child.key;
+					 child.forEach(function(snapshot)
+
+						 {
+							 post.subt = snapshot.key;
+							 snapshot.forEach(function(node)
+								 {
+
+							 post.id = node.key;
+							 post.content = node.val().content;
+							 post.likes = node.val().likes;
+							 post.user = node.val().username;
+							 post.timet = node.val().time;
+							 post.img = node.val().img
+							 post.path = node.ref.toString().substring(44);
+							 console.log("path " + post.path);
+							 og = showPost(og,post);
+								 });
+
+						 });
+				 });
+			 });
+			}
+
+
+			   $("#signup").click(function(){
+
+
+				   var xmlhttp = new XMLHttpRequest();   // new HttpRequest instance
+				   xmlhttp.onreadystatechange = function() {
+					       if (this.readyState == 4 && this.status == 200) {
+						              //document.getElementById("authstuff").innerHTML =
+							  //            this.responseText;
+						       location.replace("register");
+						           }
+					    };
+				   xmlhttp.open("GET", "register");
+				   xmlhttp.setRequestHeader("Content-Type", "charset=UTF-8");
+				   xmlhttp.send();
+
+
+				  // window.location("https://toodles-744da.web.app/register");
+			   });
+
+
+				$("#newPost").click(function(){
+
+						var content = document.getElementsByClassName('caption')[0].childNodes[1].value;
+						var topic = document.getElementById('inp_topic').value;
+						var subtopic = document.getElementById('inp_subtopic').value;
+						var imgsrc = document.getElementById("imgs").src;
+						createPost(content,topic,subtopic,imgsrc);
+					});
+
+			 function createPost(content,topic,subtopic,img = null)
+					{
+
+						var xml = new XMLHttpRequest();
+						var username = "";
+						var date = new Date();
+						var mins = date.toTimeString();
+						var time = date.toDateString();
+
+						time = time + mins;
+						xml.onreadystatechange = function()
+						{
+							if(this.readyState == 4 && this.status == 200)
+							{
+								//showToodles();
+							}
+						};
+
+
+							if(anon == true)
+							{
+								username = "anonymous";
+							}
+
 
 						xml.open("POST","api/newtoodle");
 
-						var data = {"content":content,"topic":topic,"sub":subtopic,"time":time,"username":username};
+						var data = {"content":content,"topic":topic,"sub":subtopic,"time":time,"username":username,"img":img};
 						xml.contentType = 'application/json';
-						
+
 						firebase.auth().currentUser.getIdToken(/* forceRefresh */ true).then(function(idToken) {
-						
+
 							xml.setRequestHeader('Authorization','Bearer ' + idToken);
-							
+
 							xml.setRequestHeader('Content-Type','application/json');
-							
+
 							xml.setRequestHeader('Accept','application/json');
-							
-							var sendData = JSON.stringify(data);	
-							
+
+							var sendData = JSON.stringify(data);
+
 							xml.send(sendData);
-						
+
 					});
 				}
 
 			function updateLikes(data)
 					{
 						var xml = new XMLHttpRequest();
-						
+
 						xml.onreadystatechange = function(){
-						
+
 						if(this.readyState == 4 && this.status == 200)
-							
+
 							{
-							
+
 							//	showToodles();
-								
+
 							}
-							
+
 						};
 
-						
-						
+
+
 						xml.open("POST","api/like");
-						
+
 						xml.contentType = 'application/json';
 
 						firebase.auth().currentUser.getIdToken(/* forceRefresh */ true).then(function(idToken) {
-						xml.setRequestHeader('Authorization','Bearer ' + idToken);	
-						xml.setRequestHeader('Content-Type','application/json');							  
-						xml.setRequestHeader('Accept','application/json');													
-						var sendData = JSON.stringify(data);	
+						xml.setRequestHeader('Authorization','Bearer ' + idToken);
+						xml.setRequestHeader('Content-Type','application/json');
+						xml.setRequestHeader('Accept','application/json');
+						var sendData = JSON.stringify(data);
 						xml.send(sendData);
-										
+
 						});
 
 					}
@@ -437,7 +699,7 @@
 			});
 
 
-				   
+
 	</script>
 	</body>
 </html>
